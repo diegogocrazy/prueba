@@ -1,0 +1,57 @@
+public void quicksort() {
+    cabecera = quicksortR(cabecera);
+    System.out.println(cabecera.getElemento().toString());
+    }
+
+    private Nodo quicksortR(Nodo inicio) {
+        System.out.println(inicio.getElemento().toString());
+        if (inicio == null || inicio.getSiguiente() == null) {
+            return inicio;
+        }
+        Nodo pivote = inicio;
+        Nodo menor = null;
+        Nodo mayor = null;
+        Nodo siguienteNodo = inicio.getSiguiente();
+        while (siguienteNodo != null) {
+            Nodo siguiente = siguienteNodo.getSiguiente();
+            siguienteNodo.setSiguiente(null);
+
+            if (ObtenerId(siguienteNodo) < ObtenerId(pivote)) {
+                siguienteNodo.setSiguiente(menor);
+                menor = siguienteNodo;
+            } else {
+                siguienteNodo.setSiguiente(mayor);
+                mayor = siguienteNodo;
+            }
+             siguienteNodo = siguiente;
+        }
+
+        if (menor != null) {
+            menor = quicksortR(menor);
+            Nodo finMenor = encontrarFin(menor);
+            finMenor.setSiguiente(pivote);
+        } else {
+            menor = pivote;
+        }
+        mayor = quicksortR(mayor);
+
+        return menor;
+    }
+
+    private Nodo encontrarFin(Nodo nodo) {
+        while (nodo != null && nodo.getSiguiente() != null) {
+            nodo = nodo.getSiguiente();
+        }
+        return nodo;
+    }
+
+    public int ObtenerId(Nodo nodo) {
+        if (nodo != null && nodo.getElemento() != null) {
+            String cadena = nodo.getElemento().toString();
+            int posi = cadena.indexOf(" - ");
+            if (posi != -1) {
+                return Integer.parseInt(cadena.substring(0, posi));
+            }
+        }
+        throw new IllegalArgumentException("El nodo no tiene el formato esperado.");
+    }
